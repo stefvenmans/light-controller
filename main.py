@@ -1,6 +1,9 @@
 import sched, time, requests, json
 from datetime import datetime,timedelta
 from gpiozero import LED
+import logging
+logging.basicConfig(filename='logfile.log', encoding='utf-8', level=logging.DEBUG)
+logging.info('Software started succesfull')
 
 relay_state = 0;
 relay_1 = LED(17);
