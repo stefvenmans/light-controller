@@ -15,8 +15,8 @@ t_sunset_dt = 0;
 t_morning_dt = 0;
 t_night_dt = 0;
 
-t_morning_s = '1:1:0 PM'
-t_night_s = '1:6:0 PM'
+t_morning_s = '7:0:0 AM'
+t_night_s = '11:30:0 PM'
 
 time_to_set = 0;
 
@@ -40,36 +40,45 @@ def get_time_data(day):
     global t_morning_dt
     global t_night_dt
     
+    utc_1 = timedelta(hours=1);
+    winter_time = (3,23)
+    sumer_time = (10,30)
+    current_time = (day.month, day.day);
+    
+    if winter_time < current_time < sumer_time:
+        winter_summer_offset = timedelta(hours=1);
+    else:
+        winter_summer_offset = timedelta(hours=0);
     print("Times for " + day.strftime("%Y.%m.%d"));
 
     response = requests.get('https://api.sunrise-sunset.org/json?lat=50.930062&lng=5.336959&date='+day.strftime("%Y-%m-%d"));
     
     #Sample JSON response
-    json_response =  json.loads('{"results":{"sunrise":"1:2:00 PM","sunset":"1:3:00 PM","solar_noon":"11:42:39 AM","day_length":"16:32:26","civil_twilight_begin":"2:42:33 AM","civil_twilight_end":"8:42:46 PM","nautical_twilight_begin":"1:33:11 AM","nautical_twilight_end":"9:52:07 PM","astronomical_twilight_begin":"12:00:01 AM","astronomical_twilight_end":"12:00:01 AM"},"status":"OK"}')
+    #json_response =  json.loads('{"results":{"sunrise":"1:2:00 PM","sunset":"1:3:00 PM","solar_noon":"11:42:39 AM","day_length":"16:32:26","civil_twilight_begin":"2:42:33 AM","civil_twilight_end":"8:42:46 PM","nautical_twilight_begin":"1:33:11 AM","nautical_twilight_end":"9:52:07 PM","astronomical_twilight_begin":"12:00:01 AM","astronomical_twilight_end":"12:00:01 AM"},"status":"OK"}')
     
-    #json_response = json.loads(response.text);
+    json_response = json.loads(response.text);
     json_results = json_response['results']
     
     temp = json_results['sunrise']
-    in_time = datetime.combine(day, datetime.strptime(temp, "%I:%M:%S %p").time())
+    in_time = datetime.combine(day, datetime.strptime(temp, "%I:%M:%S %p").time()) + utc_1 + winter_summer_offset
     t_sunrise_dt = in_time;
     t_sunrise = datetime.strftime(in_time, "%H:%M")
     print("Sunrise = " + t_sunrise)
 
     temp = json_results['sunset']
-    in_time = datetime.combine(day, datetime.strptime(temp, "%I:%M:%S %p").time())
+    in_time = datetime.combine(day, datetime.strptime(temp, "%I:%M:%S %p").time()) + utc_1 + winter_summer_offset
     t_sunset_dt = in_time;
     t_sunset = datetime.strftime(in_time, "%H:%M")
     print("Sunset = " + t_sunset)
     
     temp = t_morning_s
-    in_time = datetime.combine(day, datetime.strptime(temp, "%I:%M:%S %p").time())
+    in_time = datetime.combine(day, datetime.strptime(temp, "%I:%M:%S %p").time()) + utc_1 + winter_summer_offset
     t_morning_dt = in_time;
     t_morning = datetime.strftime(in_time, "%H:%M")
     print("Morning = " + t_morning)
     
     temp = t_night_s
-    in_time = datetime.combine(day, datetime.strptime(temp, "%I:%M:%S %p").time())
+    in_time = datetime.combine(day, datetime.strptime(temp, "%I:%M:%S %p").time()) + utc_1 + winter_summer_offset
     t_night_dt = in_time;
     t_night = datetime.strftime(in_time, "%H:%M")
     print("Night = " + t_night)
@@ -106,9 +115,11 @@ def timer():
 def update_relay():
     print("Lights : ", relay_state);
     if(relay_state == 0):
-        relay_1.off();
-    elif(relay_state == 1):
+        print("off")
         relay_1.on();
+    elif(relay_state == 1):
+        print("on")
+        relay_1.off();
     #print();
     
 def init_relay():
