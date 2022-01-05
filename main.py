@@ -1,7 +1,9 @@
 import sched, time, requests, json
 from datetime import datetime,timedelta
+from gpiozero import LED
 
 relay_state = 0;
+relay_1 = LED(17);
 
 t_sunrise = 0;
 t_sunset = 0;
@@ -103,6 +105,10 @@ def timer():
     
 def update_relay():
     print("Lights : ", relay_state);
+    if(relay_state == 0):
+        relay_1.off();
+    elif(relay_state == 1):
+        relay_1.on();
     #print();
     
 def init_relay():
