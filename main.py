@@ -2,7 +2,7 @@ import sched, time, requests, json
 from datetime import datetime,timedelta
 from gpiozero import LED
 import logging
-logging.basicConfig(filename='logfile.log', encoding='utf-8', level=logging.DEBUG)
+logging.basicConfig(filename='logfile.log', encoding='utf-8', level=logging.DEBUG, filemode="w")
 logging.info('Software started succesfull')
 
 relay_state = 0;
@@ -108,6 +108,8 @@ def timer():
         relay_state = 0
         get_time_data(datetime.today() + timedelta(days=1));
     
+    message = str(datetime.today().strftime("%H.%M - %d.%m.%Y $ ")) + 'Timer set for : ' + str(time_to_set.strftime("%d.%m.%Y - %H:%M"))
+    logging.info(message)
     print("Timer set for : ", time_to_set.strftime("%d.%m.%Y - %H:%M"));
     
     s.enterabs(time_to_set.timestamp(), 0, update_relay,argument = ());
@@ -117,7 +119,7 @@ def timer():
     
 def update_relay():
     print("Lights : ", relay_state);
-    message = str(datetime.today().strftime("%H.%M% - %d.%m.%Y $ ")) + 'Relay status: ' + str(relay_state)
+    message = str(datetime.today().strftime("%H.%M - %d.%m.%Y $ ")) + 'Relay status: ' + str(relay_state)
     logging.info(message)
     if(relay_state == 0):
         print("off")
