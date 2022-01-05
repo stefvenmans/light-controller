@@ -117,6 +117,7 @@ def timer():
     
 def update_relay():
     print("Lights : ", relay_state);
+    logging.info('Relay status: ', relay_state)
     if(relay_state == 0):
         print("off")
         relay_1.on();
