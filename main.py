@@ -117,7 +117,7 @@ def timer():
     
 def update_relay():
     print("Lights : ", relay_state);
-    message = 'Relay status: ' + str(relay_state)
+    message = str(datetime.today().strftime("%H.%M% - %d.%m.%Y $ ")) + 'Relay status: ' + str(relay_state)
     logging.info(message)
     if(relay_state == 0):
         print("off")
