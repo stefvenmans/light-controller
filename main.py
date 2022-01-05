@@ -15,8 +15,8 @@ t_sunset_dt = 0;
 t_morning_dt = 0;
 t_night_dt = 0;
 
-t_morning_s = '7:0:0 AM'
-t_night_s = '11:30:0 PM'
+t_morning_s = '6:0:0 AM'
+t_night_s = '10:30:0 PM'
 
 time_to_set = 0;
 
