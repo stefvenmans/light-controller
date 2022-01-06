@@ -1,6 +1,7 @@
 # Light controller
 Light controller to switch lights on/of according to data of the sun-rise/set.
 
+<h1>Auto-launch</h1>
 To let the script run at startup:
 ```
 cd light-controller
@@ -31,4 +32,6 @@ sudo crontab -e
 ```
 Done.
 
+<h1>Logging</h1>
+The script logs relevant information to a logfile (`logfile.log`). It can be viewed as follow:
 <img width="1145" alt="terminal-view" src="https://user-images.githubusercontent.com/15052685/148351573-17ebbc33-a429-4c45-bea1-a02fada239e8.png">
