@@ -2,10 +2,10 @@
 Light controller to switch lights on/of according to data of the sun-rise/set.
 
 To let the script run at startup:
-'''
+```
 cd light-controller
 nano launcher.sh
-'''
+
 Add the following to the launche file:
 '''
 cd /
